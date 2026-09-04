@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+:root{
+  --bg:#1a1a2e;
+  --glass-bg:rgba(255,255,255,.06);
+  --glass-border:rgba(255,255,255,.1);
+  --glass-shadow:0 8px 32px rgba(0,0,0,.3);
+  --glass-grad1:rgba(255,255,255,.1);
+  --glass-grad2:rgba(100,120,255,.06);
+  --text-hint:rgba(255,255,255,.4);
+  --code-bg:#1c1c2e;
+  --code-text:#ffffff;
+  --code-border:rgba(255,255,255,.08);
+  --focus-border:rgba(0,122,255,.5);
+  --focus-shadow:rgba(0,122,255,.15);
+  --placeholder:rgba(255,255,255,.2);
+  --btn-bg:rgba(255,255,255,.08);
+  --btn-border:rgba(255,255,255,.1);
+  --btn-text:rgba(255,255,255,.8);
+  --btn-hover-bg:rgba(255,255,255,.20);
+  --btn-hover-border:rgba(255,255,255,.26);
+  --btn-hover-shadow:0 2px 8px rgba(0,0,0,.2);
+  --primary-bg:rgba(0,122,255,.45);
+  --primary-border:rgba(0,122,255,.3);
+  --primary-hover-bg:rgba(0,122,255,.71);
+  --primary-hover-border:rgba(0,122,255,.56);
+  --panel-bg:rgba(0,0,0,.3);
+  --panel-border:rgba(255,255,255,.06);
+  --panel-grad:rgba(255,255,255,.04);
+  --item-text:rgba(255,255,255,.5);
+  --item-hover-bg:rgba(255,255,255,.06);
+  --status-border:rgba(255,255,255,.06);
+  --status-text:rgba(255,255,255,.3);
+  --sc-thumb:rgba(255,255,255,.12);
+  --sc-thumb-hover:rgba(255,255,255,.2);
+  --badge-bg:rgba(0,122,255,.25);
+  --badge-text:rgba(0,122,255,.85);
+  --img-bg:rgba(128,128,128,.08);
+  --theme-icon:'☀'
+}
+[data-theme=light]{
+  --bg:#e8e8ed;
+  --glass-bg:rgba(255,255,255,.7);
+  --glass-border:rgba(0,0,0,.1);
+  --glass-shadow:0 8px 32px rgba(0,0,0,.1);
+  --glass-grad1:rgba(255,255,255,.5);
+  --glass-grad2:rgba(100,120,255,.04);
+  --text-hint:rgba(0,0,0,.4);
+  --code-bg:#f0f0f2;
+  --code-text:#1a1a2e;
+  --code-border:rgba(0,0,0,.08);
+  --placeholder:rgba(0,0,0,.2);
+  --btn-bg:rgba(0,0,0,.06);
+  --btn-border:rgba(0,0,0,.1);
+  --btn-text:rgba(0,0,0,.7);
+  --btn-hover-bg:rgba(0,0,0,.1);
+  --btn-hover-border:rgba(0,0,0,.15);
+  --btn-hover-shadow:0 2px 8px rgba(0,0,0,.1);
+  --primary-bg:rgba(0,122,255,.5);
+  --primary-border:rgba(0,122,255,.35);
+  --primary-hover-bg:rgba(0,122,255,.7);
+  --primary-hover-border:rgba(0,122,255,.55);
+  --panel-bg:rgba(255,255,255,.55);
+  --panel-border:rgba(0,0,0,.06);
+  --panel-grad:rgba(255,255,255,.4);
+  --item-text:rgba(0,0,0,.5);
+  --item-hover-bg:rgba(0,0,0,.04);
+  --status-border:rgba(0,0,0,.06);
+  --status-text:rgba(0,0,0,.3);
+  --sc-thumb:rgba(0,0,0,.12);
+  --sc-thumb-hover:rgba(0,0,0,.2);
+  --badge-bg:rgba(0,122,255,.2);
+  --badge-text:rgba(0,122,255,.7);
+  --img-bg:rgba(128,128,128,.06);
+}
+[data-theme=light] #output span[style*="color:#ff79c6"]{color:#a3144d!important}
+[data-theme=light] #output span[style*="color:#50fa7b"]{color:#14710a!important}
+[data-theme=light] #output span[style*="color:#f1fa8c"]{color:#846e15!important}
+[data-theme=light] #output span[style*="color:#6272a4"]{color:#6c664b!important}
+[data-theme=light] #output span[style*="color:#f8f8f2"]{color:#1f1f1f!important}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  width:100%;
+  min-height:100vh;
+  background:var(--bg);
+  padding:20px;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif;
+  transition:background .3s ease
+}
+.glass{
+  width:100%;
+  position:relative;
+  background:var(--glass-bg);
+  backdrop-filter:blur(50px);
+  -webkit-backdrop-filter:blur(50px);
+  border:0.5px solid var(--glass-border);
+  border-radius:20px;
+  padding:20px;
+  box-shadow:var(--glass-shadow);
+  transition:background .3s ease,border .3s ease,box-shadow .3s ease
+}
+.glass::before{
+  content:'';position:absolute;inset:-1px;
+  border-radius:21px;
+  background:linear-gradient(135deg,var(--glass-grad1),transparent 50%,var(--glass-grad2));
+  pointer-events:none
+}
+h2{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  color:var(--text-hint);
+  margin-bottom:14px
+}
+#themeToggle{
+  margin-left:auto;
+  background:var(--btn-bg);
+  backdrop-filter:blur(50px);
+  -webkit-backdrop-filter:blur(50px);
+  border:0.5px solid var(--btn-border);
+  border-radius:6px;
+  /* color:var(--text-hint); */
+  font-size:16px;
+  line-height:1;
+  cursor:pointer;
+  padding:3px 7px;
+  transition:all .2s ease;
+  font-family:inherit
+}
+#themeToggle:hover{background:var(--btn-hover-bg);border-color:var(--btn-hover-border)}
+#themeToggle:active{transform:scale(.92)}
+.editor-wrap pre{
+  margin:0;padding:20px;
+  max-height:35vh;
+  min-height:200px;
+  font-family:"SF Mono","SFMono-Regular",Menlo,Monaco,"Courier New",monospace;
+  font-size:12px;line-height:1.7;
+  white-space:pre;tab-size:2;
+  overflow:auto;resize:vertical;
+  border:0.5px solid var(--code-border);
+  border-radius:14px;
+  outline:none;
+  background:var(--code-bg);
+  color:var(--code-text);
+  transition:background .3s ease,color .3s ease,border .3s ease
+}
+.editor-wrap pre:focus{border-color:var(--focus-border);box-shadow:0 0 0 2px var(--focus-shadow)}
+.editor-wrap pre.wrap{white-space:pre-wrap;word-break:break-all}
+#output:empty::before{
+  content:'在 Figma 中选择图层...';
+  color:var(--placeholder);pointer-events:none
+}
+.toolbar{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;align-items:center}
+button{
+  padding:7px 14px;
+  background:var(--btn-bg);
+  backdrop-filter:blur(50px);
+  -webkit-backdrop-filter:blur(50px);
+  border:0.5px solid var(--btn-border);
+  border-radius:8px;
+  color:var(--btn-text);
+  font-size:12px;
+  font-family:inherit;
+  font-weight:500;
+  cursor:pointer;
+  transition:all .2s ease;
+  letter-spacing:.2px;
+  -webkit-font-smoothing:antialiased
+}
+button:hover{background:var(--btn-hover-bg);border-color:var(--btn-hover-border);box-shadow:var(--btn-hover-shadow)}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.3;cursor:default;transform:none}
+button.primary{
+  background:var(--primary-bg);
+  border-color:var(--primary-border)
+}
+button.primary:hover{
+  background:var(--primary-hover-bg);
+  border-color:var(--primary-hover-border)
+}
+.images-panel{
+  position:relative;
+  margin-top:14px;
+  padding:16px;
+  background:var(--panel-bg);
+  /* backdrop-filter:blur(50px);
+  -webkit-backdrop-filter:blur(50px); */
+  border:0.5px solid var(--panel-border);
+  border-radius:14px;
+  overflow:hidden;
+  transition:background .3s ease,border .3s ease
+}
+.images-panel::before{
+  content:'';position:absolute;inset:0;
+  border-radius:14px;
+  background:linear-gradient(180deg,var(--panel-grad),transparent 60%);
+  pointer-events:none
+}
+.images-panel h2{position:relative;z-index:1}
+#imgList{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));
+  gap:10px;margin-top:10px;position:relative;z-index:1
+}
+.image-item{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px;font-size:10px;color:var(--item-text);text-align:center;
+  border-radius:10px;transition:background .2s;position:relative;z-index:1
+}
+.image-item:hover{background:var(--item-hover-bg);cursor:pointer}
+.image-item a{text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:4px}
+.status{
+  margin-top:14px;padding:10px 14px;
+  font-size:11px;color:var(--status-text);
+  border-top:0.5px solid var(--status-border);
+  text-align:center;letter-spacing:.3px;
+  -webkit-font-smoothing:antialiased;
+  transition:color .3s ease,border .3s ease
+}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--sc-thumb);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--sc-thumb-hover)}
+::-webkit-scrollbar-corner{background:transparent}
+</style>
+</head>
+<body>
+
+<div class="glass">
+<h2>MAML 代码输出 0.0.8 <span id="layerCount" style="display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--badge-bg);color:var(--badge-text);font-size:10px;font-weight:600">0</span><button id="themeToggle">☀</button></h2>
+<div class="editor-wrap" >
+  <!-- contenteditable="true" spellcheck="false" -->
+<pre class="wrap"><code id="output" ></code></pre>
+</div>
+<div class="toolbar">
+<button id="copyBtn" class="primary">⌘ 复制</button>
+<button id="wrapBtn">↔ 折叠代码</button>
+<button id="exportBtn">↓ 图片展示</button>
+<button id="zipBtn" style="display:none">⬇ 一键存图</button>
+<button id="closeBtn" style="margin-left:auto">✕ 清空</button>
+</div>
+</div>
+
+<div id="imgSection" class="images-panel" style="display:none">
+<h2>图片导出 <button id="imgCloseBtn" style="margin-left:auto;background:none;border:none;color:var(--text-hint);cursor:pointer;padding:0;font-size:13px;line-height:1;font-family:inherit">✕</button></h2>
+<div id="imgList"></div>
+</div>
+
+<div id="status" class="status">Select layers in Figma</div>
+
+<script>
+const DEFAULT_THEME = 'light'; // 'dark' | 'light'
+
+if (DEFAULT_THEME === 'light') document.documentElement.setAttribute('data-theme', 'light');
+function crc32(d) {
+  let c = 0xFFFFFFFF;
+  for (let i = 0; i < d.length; i++) { c ^= d[i]; for (let j = 0; j < 8; j++) c = (c >>> 1) ^ (c & 1 ? 0xEDB88320 : 0); }
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+function s2b(s) {
+  if (typeof TextEncoder !== 'undefined') return new TextEncoder().encode(s);
+  const b = [];
+  for (let i = 0; i < s.length; i++) { let c = s.charCodeAt(i); if (c < 0x80) b.push(c); else if (c < 0x800) { b.push(0xC0 | (c >> 6)); b.push(0x80 | (c & 0x3F)); } else { b.push(0xE0 | (c >> 12)); b.push(0x80 | ((c >> 6) & 0x3F)); b.push(0x80 | (c & 0x3F)); } }
+  return new Uint8Array(b);
+}
+function makeZip(fs) {
+  const lbs = [], cds = []; let off = 0;
+  for (const f of fs) {
+    const nb = s2b(f.name), c = crc32(f.data), sz = f.data.length;
+    const lh = new ArrayBuffer(30 + nb.length);
+    const v = new DataView(lh);
+    v.setUint32(0, 0x04034b50, true); v.setUint16(4, 20, true);
+    v.setUint16(6, 0, true); v.setUint16(8, 0, true);
+    v.setUint16(10, 0, true); v.setUint16(12, 0, true);
+    v.setUint32(14, c, true); v.setUint32(18, sz, true);
+    v.setUint32(22, sz, true); v.setUint16(26, nb.length, true);
+    v.setUint16(28, 0, true);
+    new Uint8Array(lh, 30).set(nb);
+    lbs.push({ h: lh, d: f.data });
+    const ch = new ArrayBuffer(46 + nb.length);
+    const v2 = new DataView(ch);
+    v2.setUint32(0, 0x02014b50, true); v2.setUint16(4, 20, true);
+    v2.setUint16(6, 20, true); v2.setUint16(8, 0, true);
+    v2.setUint16(10, 0, true); v2.setUint16(12, 0, true);
+    v2.setUint16(14, 0, true); v2.setUint32(16, c, true);
+    v2.setUint32(20, sz, true); v2.setUint32(24, sz, true);
+    v2.setUint16(28, nb.length, true); v2.setUint16(30, 0, true);
+    v2.setUint16(32, 0, true); v2.setUint16(34, 0, true);
+    v2.setUint16(36, 0, true); v2.setUint32(38, 0, true);
+    v2.setUint32(42, off, true);
+    new Uint8Array(ch, 46).set(nb);
+    cds.push(ch);
+    off += lh.byteLength + sz;
+  }
+  const cs = cds.reduce((s, e) => s + e.byteLength, 0);
+  const eocd = new ArrayBuffer(22);
+  const ve = new DataView(eocd);
+  ve.setUint32(0, 0x06054b50, true); ve.setUint16(4, 0, true);
+  ve.setUint16(6, 0, true); ve.setUint16(8, fs.length, true);
+  ve.setUint16(10, fs.length, true); ve.setUint32(12, cs, true);
+  ve.setUint32(16, off, true); ve.setUint16(20, 0, true);
+  const total = lbs.reduce((s, l) => s + l.h.byteLength + l.d.byteLength, 0) + cs + 22;
+  const out = new Uint8Array(total); let pos = 0;
+  for (const l of lbs) { out.set(new Uint8Array(l.h), pos); pos += l.h.byteLength; out.set(l.d, pos); pos += l.d.byteLength; }
+  for (const c of cds) { out.set(new Uint8Array(c), pos); pos += c.byteLength; }
+  out.set(new Uint8Array(eocd), pos);
+  return out;
+}
+function dlBlob(d, n, m) {
+  const b = new Blob([d], { type: m }), u = URL.createObjectURL(b);
+  const a = document.createElement('a'); a.href = u; a.download = n;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(u), 10000);
+}
+async function copyText(s) {
+  if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(s); return; }
+  const ta = document.createElement('textarea');
+  ta.value = s; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  document.execCommand('copy'); document.body.removeChild(ta);
+}
+
+const out = document.getElementById('output');
+const outPre = out.parentElement;
+const layerCount = document.getElementById('layerCount');
+const copyBtn = document.getElementById('copyBtn');
+const exportBtn = document.getElementById('exportBtn');
+const zipBtn = document.getElementById('zipBtn');
+const wrapBtn = document.getElementById('wrapBtn');
+const closeBtn = document.getElementById('closeBtn');
+const imgSection = document.getElementById('imgSection');
+const imgList = document.getElementById('imgList');
+const imgCloseBtn = document.getElementById('imgCloseBtn');
+const status = document.getElementById('status');
+const themeToggle = document.getElementById('themeToggle');
+let exportedFiles = [], lastXml = '';
+
+themeToggle.textContent = DEFAULT_THEME === 'light' ? '🌙' : '☀️';
+// themeToggle.textContent = DEFAULT_THEME === 'light' ? '☾' : '☀';
+themeToggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  if (isLight) {
+    document.documentElement.removeAttribute('data-theme');
+    themeToggle.textContent = '☀️';
+    // ☀
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light');
+    themeToggle.textContent = '🌙';
+    // ☾
+  }
+});
+
+copyBtn.addEventListener('click', () => {
+  if (!lastXml) return;
+  try { copyText(lastXml); copyBtn.textContent = '✓ 复制成功'; setTimeout(() => { copyBtn.textContent = '⌘ 复制'; }, 2000); }
+  catch (e) { status.textContent = 'Copy failed: ' + e.message; }
+});
+exportBtn.addEventListener('click', () => {
+  if (imgSection.style.display === 'block') {
+    imgSection.style.display = 'none'; exportBtn.innerHTML = '↓ 图片展开';
+  } else if (!exportBtn.disabled) {
+    parent.postMessage({ pluginMessage: { type: 'exportImages' } }, '*');
+  }
+});
+imgCloseBtn.addEventListener('click', () => {
+  imgSection.style.display = 'none'; exportBtn.innerHTML = '↓ 图片展开';
+});
+zipBtn.addEventListener('click', () => {
+  if (!exportedFiles.length) return;
+  const zip = makeZip(exportedFiles);
+  dlBlob(zip, 'maml_images_' + Date.now() + '.zip', 'application/zip');
+});
+closeBtn.addEventListener('click', () => {
+  out.innerHTML = ''; lastXml = '';
+  layerCount.textContent = '0';
+  imgSection.style.display = 'none'; imgList.innerHTML = '';
+  zipBtn.style.display = 'none'; exportedFiles = [];
+  exportBtn.disabled = true; exportBtn.innerHTML = '↓ 图片展示';
+  status.textContent = '世界安静了';
+});
+wrapBtn.addEventListener('click', () => {
+  outPre.classList.toggle('wrap');
+  wrapBtn.textContent = outPre.classList.contains('wrap') ? '↔ 折叠代码' : '↔ 展开代码';
+});
+
+window.addEventListener('message', (e) => {
+  const msg = e.data.pluginMessage;
+  if (!msg) return;
+  if (msg.type === 'xml') {
+    out.innerHTML = msg.html || '';
+    lastXml = msg.xml || '';
+    layerCount.textContent = msg.count;
+    exportBtn.disabled = msg.imgCount === 0; exportBtn.innerHTML = '↓ 图片展示';
+    imgSection.style.display = 'none'; imgList.innerHTML = '';
+    zipBtn.style.display = 'none'; exportedFiles = [];
+    const lines = msg.xml ? msg.xml.split('\n').length : 0;
+    status.textContent = msg.xml ? lines + ' lines \u00B7 ' + msg.imgCount + ' images' : '— OpenCode × Civet ©️ 2026 —';
+  }
+  if (msg.type === 'images') {
+    imgList.innerHTML = ''; exportedFiles = [];
+    msg.images.forEach(img => {
+      if (img.error) {
+        const d = document.createElement('div'); d.className = 'image-item';
+        d.textContent = img.name + ' (error: ' + img.error + ')'; imgList.appendChild(d); return;
+      }
+      const mime = img.name.endsWith('.jpg') ? 'image/jpeg' : 'image/png';
+      const uint8 = new Uint8Array(img.data);
+      const blob = new Blob([uint8], { type: mime }); const url = URL.createObjectURL(blob);
+      exportedFiles.push({ name: img.name, data: uint8 });
+      const d = document.createElement('div'); d.className = 'image-item';
+      const a = document.createElement('a'); a.href = url; a.download = img.name; a.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:inherit';
+      let thumb;
+      if (img.svg) {
+        const dec = new TextDecoder();
+        const svgStr = dec.decode(new Uint8Array(img.svg));
+        const p = new DOMParser();
+        const sd = p.parseFromString(svgStr, 'image/svg+xml');
+        thumb = sd.documentElement;
+        thumb.setAttribute('width','56'); thumb.setAttribute('height','56');
+        thumb.style.cssText = 'border-radius:6px;display:block';
+      } else {
+        const SVG = 'http://www.w3.org/2000/svg';
+        thumb = document.createElementNS(SVG, 'svg');
+        thumb.setAttribute('width','56'); thumb.setAttribute('height','56');
+        thumb.setAttribute('viewBox','0 0 56 56');
+        thumb.style.cssText = 'border-radius:6px;background:rgba(128,128,128,.08);display:block';
+        const si = document.createElementNS(SVG, 'image');
+        si.setAttribute('href', url);
+        si.setAttribute('width','56'); si.setAttribute('height','56');
+        si.setAttribute('preserveAspectRatio','xMidYMid meet');
+        thumb.appendChild(si);
+      }
+      const label = document.createElement('span'); label.textContent = img.name;
+      label.style.cssText = 'overflow:hidden;text-overflow:ellipsis;max-width:64px;font-size:10px';
+      a.append(thumb, label); d.appendChild(a); imgList.appendChild(d);
+    });
+    imgSection.style.display = 'block'; exportBtn.innerHTML = '↑ 图片收起'; zipBtn.style.display = 'inline-block';
+    status.textContent = 'Exported ' + msg.images.length + ' images';
+  }
+});
+</script>
+</body>
+</html>

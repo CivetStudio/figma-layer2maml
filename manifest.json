@@ -1,0 +1,8 @@
+{
+  "name": "Layer2Maml",
+  "id": "layer2maml",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"]
+}
